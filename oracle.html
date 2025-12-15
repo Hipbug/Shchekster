@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Пророчества Щёкстера</title>
+    <title>Вопрос Владыке</title>
     
     <link rel="icon" type="image/png" href="./icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -21,7 +21,6 @@
             --cursor-color: #3F98F7;
             --danger-color: #ef4444;
             
-            /* ПОЛУПРОЗРАЧНЫЙ ФОН */
             --header-bg: rgba(10, 10, 10, 0.75); 
             
             --border-color: rgba(255, 255, 255, 0.1);
@@ -44,13 +43,13 @@
         }
 
         /* --- ВЫДЕЛЕНИЕ --- */
-        ::selection { background-color: var(--cursor-color); color: #000000; text-shadow: none; }
-        ::-moz-selection { background-color: var(--cursor-color); color: #000000; text-shadow: none; }
+        ::selection { background-color: var(--cursor-color); color: #ffffff; text-shadow: none; }
+        ::-moz-selection { background-color: var(--cursor-color); color: #ffffff; text-shadow: none; }
         body.light-theme ::selection { color: #ffffff; }
 
         /* --- СНЕГ --- */
         .snowflake { position: fixed; top: -10px; z-index: 9998; color: #fff; user-select: none; pointer-events: none; animation: fall linear forwards; }
-        body.light-theme .snowflake { color: #89CFF0; }
+        body.light-theme .snowflake { color: #3F98F7; }
         @keyframes fall { to { transform: translateY(105vh); } }
 
         /* --- RESET --- */
@@ -73,193 +72,114 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            
-            /* Живой градиент */
-            background: linear-gradient(135deg, var(--bg-color), #0f172a);
-            background-size: 200% 200%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         /* --- CURSOR --- */
-        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
         .cursor-dot { width: 8px; height: 8px; background-color: var(--cursor-color); }
-        .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--cursor-color); transition: width 0.2s, height 0.2s, background-color 0.2s; }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 2px solid var(--cursor-color);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
         body:hover .cursor-outline.hovered { width: 60px; height: 60px; background-color: rgba(63, 152, 247, 0.15); border-color: transparent; }
 
         /* --- HEADER --- */
-        header { 
-            position: fixed; top: 0; width: 100%; height: 70px; 
-            padding: 0 2rem; background-color: var(--header-bg); 
-            backdrop-filter: blur(12px); display: flex; justify-content: space-between; align-items: center; 
-            z-index: 1000; border-bottom: 1px solid var(--border-color); 
+        header {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            padding: 0 2rem; background-color: var(--header-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; border-bottom: 1px solid var(--border-color);
         }
         .header-left { display: flex; align-items: center; gap: 15px; }
-        .logo { font-weight: 900; font-size: 1.5rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; }
-        .back-btn { color: var(--text-color); text-decoration: none; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; transition: transform 0.2s; }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 2px; }
+        .back-btn { 
+            color: var(--text-color); text-decoration: none; font-size: 1.2rem; 
+            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
         .back-btn:hover { background: var(--control-bg); color: var(--accent-primary); transform: scale(1.1); }
-        .controls { display: flex; align-items: center; gap: 15px; }
-        .audio-group { display: flex; align-items: center; gap: 12px; background: var(--control-bg); padding: 6px 16px; border-radius: 50px; border: 1px solid var(--border-color); }
-        .icon-btn { background: none; border: none; color: var(--accent-primary); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        input[type=range] { -webkit-appearance: none; width: 80px; height: 4px; background: var(--slider-track); border-radius: 2px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); cursor: pointer; transition: transform 0.2s; }
-        .theme-btn { background: var(--control-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
-        /* --- MAGIC ORB SECTION --- */
+        .controls { display: flex; align-items: center; gap: 15px; }
+        .icon-btn { background: none; border: none; color: var(--accent-primary); font-size: 1.1rem; cursor: pointer; }
+        .theme-btn { background: var(--control-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;}
+        input[type=range] { -webkit-appearance: none; width: 80px; height: 4px; background: var(--slider-track); border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); }
+
+        /* --- CONTAINER --- */
         .container {
-            max-width: 800px; margin: 0 auto;
-            padding: 120px 20px 60px;
-            text-align: center;
-            min-height: 80vh;
-            display: flex; flex-direction: column; align-items: center;
+            width: 100%; min-height: 100vh;
+            padding-top: 70px; padding-bottom: 40px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
+        /* --- ORB (RESIZED) --- */
         .orb-container {
-            width: 300px;
-            height: 300px;
-            margin: 0 auto 40px;
+            width: 220px; /* Было 300px */
+            height: 220px; /* Было 300px */
             position: relative;
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer;
-            animation: float 4s ease-in-out infinite;
+            cursor: pointer; animation: float 6s ease-in-out infinite; margin-bottom: 30px;
         }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         .orb {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid var(--accent-primary);
-            position: relative;
-            z-index: 10;
-            transition: all 0.5s;
-            background: #000;
-            animation: pulse-glow 3s infinite;
+            width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+            border: 4px solid var(--accent-primary); box-shadow: 0 0 60px rgba(63, 152, 247, 0.3);
+            position: relative; z-index: 10; transition: all 0.5s; background: #000;
         }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 60px rgba(63, 152, 247, 0.4); }
-            50% { box-shadow: 0 0 90px rgba(63, 152, 247, 0.7), 0 0 30px rgba(255, 255, 255, 0.2); }
-            100% { box-shadow: 0 0 60px rgba(63, 152, 247, 0.4); }
-        }
-
-        .orb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s;
-        }
-
-        .orb:hover {
-            box-shadow: 0 0 100px rgba(63, 152, 247, 0.9);
-            transform: scale(1.02);
-        }
-
-        .orb.shaking {
-            animation: shakeOrb 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shakeOrb {
-            10%, 90% { transform: translate3d(-2px, 0, 0); }
-            20%, 80% { transform: translate3d(4px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-            40%, 60% { transform: translate3d(6px, 0, 0); }
-        }
+        .orb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+        .orb:hover { box-shadow: 0 0 90px rgba(63, 152, 247, 0.6); transform: scale(1.02); }
+        .orb.shaking { animation: shakeOrb 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shakeOrb { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-6px, 0, 0); } 40%, 60% { transform: translate3d(6px, 0, 0); } }
 
         .orb-inner {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: #fff;
-            font-size: 5rem;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.5s, background 0.5s, box-shadow 0.5s;
-            pointer-events: none;
-            background: rgba(0,0,0,0.5);
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: #fff; font-size: 4rem; /* Уменьшил с 5rem */ 
+            z-index: 20; opacity: 0; pointer-events: none;
+            background: rgba(0,0,0,0.6); transition: opacity 0.3s;
         }
+        .orb-inner.visible { opacity: 1; }
 
-        .orb-inner.visible { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1.1); 
-        }
-
-        /* Частицы магии */
-        .particle {
-            position: absolute;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particle-fly 1s ease-out forwards;
-        }
-
-        @keyframes particle-fly {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
+        /* --- TEXT --- */
         .prediction-box {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            max-width: 600px; width: 100%; min-height: 150px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            margin-top: 20px;
-            position: relative; overflow: hidden;
-            transition: transform 0.3s;
+            min-height: 80px; display: flex; justify-content: center; align-items: center;
+            text-align: center; max-width: 600px; padding: 0 20px;
         }
-        
-        .prediction-box:hover { transform: translateY(-5px); }
-
         .prediction-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-primary);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease-out;
+            font-size: 1.4rem; font-weight: 600; color: var(--accent-primary);
+            opacity: 0.6; transform: translateY(10px); transition: all 0.5s ease-out;
         }
+        .prediction-text.show { opacity: 1; transform: translateY(0); color: var(--text-color); }
+        .prediction-text.toxic { color: var(--danger-color); }
 
-        .prediction-text.show { opacity: 1; transform: translateY(0); }
-
+        /* --- BUTTON --- */
         .cta-btn {
-            display: inline-flex; justify-content: center; align-items: center;
-            margin-top: 3rem; padding: 1.2rem 3rem; border-radius: 50px;
-            text-decoration: none; font-weight: bold; letter-spacing: 1px; font-size: 1.2rem;
-            gap: 10px; transition: all 0.3s;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: #ffffff; box-shadow: 0 10px 25px rgba(63, 152, 247, 0.3); border: none; cursor: pointer;
+            background: transparent; border: 2px solid var(--accent-primary); color: var(--accent-primary);
+            padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 1rem;
+            margin-top: 40px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+            transition: all 0.3s;
         }
-        .cta-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 35px rgba(63, 152, 247, 0.5); }
+        .cta-btn:hover { background: var(--accent-primary); color: #fff; box-shadow: 0 0 20px rgba(63, 152, 247, 0.4); transform: translateY(-3px); }
         .cta-btn:active { transform: scale(0.95); }
 
-        footer { margin-top: auto; padding: 2rem; color: var(--text-muted); border-top: 1px solid var(--border-color); font-size: 0.9rem; text-align: center; }
+        /* --- FOOTER --- */
+        footer { position: fixed; bottom: 0; width: 100%; padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-align: center; pointer-events: none; }
 
+        /* Mobile */
         @media (max-width: 768px) {
             * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; }
-            header { height: 70px; padding: 0 1rem; }
+            header { padding: 0 1rem; }
             .logo { font-size: 1.2rem; } .controls { gap: 10px; }
-            input[type=range] { display: none; } .audio-group { padding: 6px 12px; }
-            .container { padding-top: 100px; }
-            .orb-container { width: 250px; height: 250px; }
+            input[type=range] { display: none; } 
+            
+            /* Уменьшаем еще сильнее для мобилок */
+            .orb-container { width: 180px; height: 180px; }
+            
             .prediction-text { font-size: 1.2rem; }
         }
     </style>
@@ -276,71 +196,47 @@
     <header>
         <div class="header-left">
             <a href="index.html" class="back-btn" title="На главную"><i class="fas fa-arrow-left"></i></a>
-            <div class="logo">МАГИЯ</div>
+            <div class="logo">ОРАКУЛ</div>
         </div>
-        
         <div class="controls">
-            <div class="audio-group">
-                <button class="icon-btn" id="musicToggle"><i class="fas fa-play"></i></button>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
-            </div>
+            <button class="icon-btn" id="musicToggle"><i class="fas fa-play"></i></button>
             <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
         </div>
     </header>
 
     <div class="container">
         
-        <div class="orb-container" id="orbContainer" onclick="getPrediction()">
+        <div class="orb-container" onclick="getPrediction()">
             <div class="orb" id="magicOrb">
-                <img src="./oracle.jpg" alt="Оракул Щёкстер">
+                <img src="./oracle.jpg" alt="Шар судьбы">
+                <div class="orb-inner" id="orbInner"><i class="fas fa-star"></i></div>
             </div>
-            <div class="orb-inner" id="orbNumber"><i class="fas fa-star"></i></div>
         </div>
 
         <div class="prediction-box">
             <div id="predictionText" class="prediction-text">
-                Нажми на шар, и Владыка откроет истину...
+                Коснись сферы, чтобы узнать судьбу...
             </div>
         </div>
 
         <button class="cta-btn" onclick="getPrediction()">
-            <i class="fas fa-magic"></i> ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ
+            <i class="fas fa-magic"></i> ПОЛУЧИТЬ ОТВЕТ
         </button>
 
     </div>
 
-    <footer>
-        <p>Shchekster Oracle | Have a great day!</p>
-    </footer>
+    <footer>Shchekster Oracle</footer>
 
     <script>
-        // --- LOGIC ---
         const parts = {
-            time: ["Сегодня", "Завтра утром", "В полночь", "Когда рак на горе свистнет", "На этой неделе", "В 2025 году", "Прямо сейчас", "Через час", "Возможно, завтра", "Пока ты спишь", "Когда Щёкстер поест", "В момент великой лени", "Никогда", "Возможно, сегодня", "В худший день твоей жизни", "Когда ты забудешь телефон дома", "Когда Щёкстер захочет", "Завтра"],
-            event: ["тебя ждет невероятная удача", "ты найдешь забытый носок", "тебе подарят паштет", "ты встретишь рыжего кота", "ты наступишь в лужу", "тебя обосрет голубь", "ты уронишь телефон экраном вниз", "твой интернет отрубится", "ты опоздаешь везде", "ты забудешь выключить утюг", "все будут смеяться над тобой", "тебя уволят (шутка... или нет)", "ты наберешь 5 кг", "ты встретишь бывшую(его)", "кот нассыт тебе в тапки", "ты найдешь 100 рублей", "ты ударишься мизинцем об тумбочку", "ты найдешь на улице 500 рублей", "тебе прострелят колени"],
-            outcome: ["и это изменит всё.", "будь готов.", "не упусти момент!", "мяу!", "звезды в шоке.", "Щёкстер одобряет.", "это знак свыше.", "и ты будешь плакать.", "лошара.", "ха-ха-ха!", "смирись с этим, неудачник.", "и никто тебе не поможет.", "потому что ты это заслужил.", "жизнь боль.", "так тебе и надо.", "и это только начало.", "но это не точно.", "это конец.", "жизнь изменится."]
+            time: ["Сегодня", "Завтра", "В полночь", "На днях", "В 2025 году", "Прямо сейчас", "Через час", "Когда выспишься", "Никогда", "В худший день", "Когда забудешь телефон"],
+            event: ["тебя ждет успех", "найдешь деньги", "встретишь кота", "придет гениальная идея", "наступишь в лужу", "отрубится интернет", "опоздаешь везде", "все будут смеяться", "тебя уволят", "наберешь вес", "кот нассыт в тапки"],
+            outcome: ["и это судьба.", "будь готов.", "не упусти!", "мяу!", "звезды решили так.", "Щёкстер доволен.", "и ты будешь плакать.", "лошара.", "смирись.", "жизнь боль.", "так тебе и надо."]
         };
 
         function generatePrediction() {
-            // Шанс 30% на токсичный ответ
             if (Math.random() < 0.3) {
-                const specials = [
-                    "Ты выглядишь ужасно сегодня.",
-                    "Твой IQ меньше, чем у моего лотка.",
-                    "Удачи не будет. Уходи.",
-                    "Я вижу пустоту в твоем будущем.",
-                    "Тебя никто не любит, кроме (возможно) мамы.",
-                    "42. Но тебе это не поможет.",
-                    "Покорми кота, иначе я уничтожу твой мир.",
-                    "Не ешь желтый снег, идиот.",
-                    "Встань и найди работу, кожаный.",
-                    "Твоя аура пахнет дешевым кормом.",
-                    "Завтра будет хуже, чем сегодня.",
-                    "Твои мечты — это просто галлюцинации.",
-                    "Ты выйграешь миллион (ха - ха, нет)",
-                    "Чел, ты умрёшь и т.д.",
-                    "В ближайшее время тебе стоит начать приём антидепрессантов."
-                ];
+                const specials = ["Ты выглядишь ужасно.", "Твой IQ как у хлебушка.", "Удачи не будет.", "Пустота впереди.", "Никто тебя не любит.", "42. Но это не поможет.", "Покорми кота или умрешь.", "Не ешь желтый снег.", "Найди работу.", "Аура как у помойки."];
                 return specials[Math.floor(Math.random() * specials.length)];
             }
             const t = parts.time[Math.floor(Math.random() * parts.time.length)];
@@ -349,47 +245,18 @@
             return `${t} ${e}, ${o}`;
         }
 
-        function spawnMagicParticles() {
-            const container = document.getElementById('orbContainer');
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 8 + 4;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                
-                particle.style.left = (centerX + window.scrollX) + 'px';
-                particle.style.top = (centerY + window.scrollY) + 'px';
-                
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 150 + 100;
-                const tx = Math.cos(angle) * distance + 'px';
-                const ty = Math.sin(angle) * distance + 'px';
-                
-                particle.style.setProperty('--tx', tx);
-                particle.style.setProperty('--ty', ty);
-                
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
-            }
-        }
-
         function getPrediction() {
             const orb = document.getElementById('magicOrb');
+            const inner = document.getElementById('orbInner');
             const text = document.getElementById('predictionText');
-            const inner = document.getElementById('orbNumber');
 
-            text.classList.remove('show');
+            text.classList.remove('show', 'toxic');
             inner.classList.remove('visible');
             orb.classList.add('shaking');
-
-            // Запускаем эффект частиц
-            spawnMagicParticles();
+            
+            // Сброс цвета
+            orb.style.borderColor = "#3F98F7";
+            orb.style.boxShadow = "0 0 60px rgba(63, 152, 247, 0.3)";
 
             const pred = generatePrediction();
 
@@ -398,25 +265,26 @@
                 text.innerText = pred;
                 text.classList.add('show');
                 
-                // Проверяем на "плохие" слова
-                const isBad = pred.includes("ужасно") || pred.includes("лошара") || pred.includes("нассыт") || pred.includes("хуже") || pred.includes("боль") || pred.includes("смерть") || pred.includes("умрёшь") || pred.includes("плохо") || pred.includes("ужас") || pred.includes("никогда") || pred.includes("неудачник") || pred.includes("идиот");
+                const isBad = pred.includes("ужасно") || pred.includes("лошара") || pred.includes("нассыт") || pred.includes("боль") || pred.includes("умрешь") || pred.includes("плохо") || pred.includes("никогда") || pred.includes("идиот") || pred.includes("помойки");
                 
                 if (isBad) {
-                    inner.innerHTML = '<i class="fas fa-star"></i>';
-                    inner.style.color = '#ef4444'; // Красная звезда
-                    // --- КРАСНЫЙ ФОН И СВЕЧЕНИЕ ---
-                    inner.style.background = 'rgba(239, 68, 68, 0.7)'; 
-                    inner.style.boxShadow = '0 0 50px rgba(239, 68, 68, 0.8), inset 0 0 20px rgba(239, 68, 68, 0.5)';
+                    inner.innerHTML = '<i class="fas fa-star"></i>'; // Звезда
+                    inner.style.color = '#ef4444'; // Красная
+                    text.classList.add('toxic');   
+                    
+                    orb.style.borderColor = "#ef4444";
+                    orb.style.boxShadow = "0 0 80px rgba(239, 68, 68, 0.8)";
+                    inner.style.background = 'rgba(239, 68, 68, 0.7)';
                 } else {
                     inner.innerHTML = '<i class="fas fa-star"></i>';
                     inner.style.color = '#fff';
-                    // --- ОБЫЧНЫЙ РЕЖИМ ---
+                    
+                    orb.style.borderColor = "#3F98F7";
+                    orb.style.boxShadow = "0 0 80px rgba(63, 152, 247, 0.8)";
                     inner.style.background = 'rgba(0, 0, 0, 0.5)';
-                    inner.style.boxShadow = 'none';
                 }
                 
                 inner.classList.add('visible');
-                
                 if (navigator.vibrate) navigator.vibrate(100);
             }, 500);
         }
@@ -427,24 +295,21 @@
             snowflake.innerHTML = '❄';
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.opacity = Math.random();
-            snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+            snowflake.style.animationDuration = Math.random() * 3 + 3 + 's';
             document.body.appendChild(snowflake);
-            setTimeout(() => { snowflake.remove(); }, 5000);
+            setTimeout(() => { snowflake.remove(); }, 6000);
         }
-        setInterval(createSnowflake, 150);
+        setInterval(createSnowflake, 200);
 
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
-        const isTouchDevice = window.matchMedia("(hover: none)").matches;
-
-        if (!isTouchDevice) {
+        if (!window.matchMedia("(hover: none)").matches) {
             window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`;
-                cursorDot.style.top = `${e.clientY}px`;
+                cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
                 cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
             });
-            document.querySelectorAll('a, button, input, .orb').forEach(el => {
+            document.querySelectorAll('a, button, .orb').forEach(el => {
                 el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovered'));
                 el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovered'));
             });
@@ -464,13 +329,11 @@
 
         const musicBtn = document.getElementById('musicToggle');
         const audio = document.getElementById('bgMusic');
-        const volSlider = document.getElementById('volumeSlider');
         audio.volume = 0.5;
         musicBtn.addEventListener('click', () => {
             if (audio.paused) { audio.play(); musicBtn.querySelector('i').className = 'fas fa-pause'; }
             else { audio.pause(); musicBtn.querySelector('i').className = 'fas fa-play'; }
         });
-        volSlider.addEventListener('input', (e) => audio.volume = e.target.value);
     </script>
 </body>
 </html>
