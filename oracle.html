@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="./icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- 1. ПАЛИТРА --- */
+        /* --- 1. ЕДИНАЯ ПАЛИТРА --- */
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
@@ -21,7 +21,8 @@
             --cursor-color: #3F98F7;
             --danger-color: #ef4444;
             
-            --header-bg: rgba(10, 10, 10, 0.75); 
+            /* GLASS HEADER */
+            --header-bg: rgba(18, 18, 18, 0.8); 
             
             --border-color: rgba(255, 255, 255, 0.1);
             --control-bg: rgba(255, 255, 255, 0.08); 
@@ -35,7 +36,7 @@
             --text-color: #1a202c; 
             --text-muted: #4a5568;
             --card-bg: #ffffff;
-            --header-bg: rgba(255, 255, 255, 0.75);
+            --header-bg: rgba(255, 255, 255, 0.8);
             --border-color: rgba(0, 0, 0, 0.1);
             --control-bg: rgba(0, 0, 0, 0.06); 
             --slider-track: rgba(0, 0, 0, 0.15);
@@ -43,13 +44,12 @@
         }
 
         /* --- ВЫДЕЛЕНИЕ --- */
-        ::selection { background-color: var(--cursor-color); color: #ffffff; text-shadow: none; }
-        ::-moz-selection { background-color: var(--cursor-color); color: #ffffff; text-shadow: none; }
-        body.light-theme ::selection { color: #ffffff; }
+        ::selection { background-color: var(--accent-primary); color: #ffffff; text-shadow: none; }
+        ::-moz-selection { background-color: var(--accent-primary); color: #ffffff; text-shadow: none; }
 
         /* --- СНЕГ --- */
         .snowflake { position: fixed; top: -10px; z-index: 9998; color: #fff; user-select: none; pointer-events: none; animation: fall linear forwards; }
-        body.light-theme .snowflake { color: #3F98F7; }
+        body.light-theme .snowflake { color: #89CFF0; }
         @keyframes fall { to { transform: translateY(105vh); } }
 
         /* --- RESET --- */
@@ -74,7 +74,7 @@
             overflow: hidden;
         }
 
-        /* --- CURSOR --- */
+        /* --- CURSOR (PC ONLY) --- */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
             border-radius: 50%; z-index: 9999; pointer-events: none;
@@ -84,7 +84,7 @@
             width: 40px; height: 40px; border: 2px solid var(--cursor-color);
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
-        body:hover .cursor-outline.hovered { width: 60px; height: 60px; background-color: rgba(63, 152, 247, 0.15); border-color: transparent; }
+        body:hover .cursor-outline.hovered { width: 60px; height: 60px; background: rgba(63, 152, 247, 0.15); border-color: transparent; }
 
         /* --- HEADER --- */
         header {
@@ -95,7 +95,7 @@
             z-index: 1000; border-bottom: 1px solid var(--border-color);
         }
         .header-left { display: flex; align-items: center; gap: 15px; }
-        .logo { font-weight: 900; font-size: 1.5rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 2px; }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; }
         .back-btn { 
             color: var(--text-color); text-decoration: none; font-size: 1.2rem; 
             width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -104,10 +104,20 @@
         .back-btn:hover { background: var(--control-bg); color: var(--accent-primary); transform: scale(1.1); }
 
         .controls { display: flex; align-items: center; gap: 15px; }
-        .icon-btn { background: none; border: none; color: var(--accent-primary); font-size: 1.1rem; cursor: pointer; }
-        .theme-btn { background: var(--control-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;}
+        
+        /* Группа аудио (кнопка + ползунок) */
+        .audio-group { 
+            display: flex; align-items: center; gap: 12px; 
+            background: var(--control-bg); padding: 6px 16px; 
+            border-radius: 50px; border: 1px solid var(--border-color); 
+        }
+        
+        .icon-btn { background: none; border: none; color: var(--accent-primary); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
         input[type=range] { -webkit-appearance: none; width: 80px; height: 4px; background: var(--slider-track); border-radius: 2px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); cursor: pointer; }
+        
+        .theme-btn { background: var(--control-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;}
 
         /* --- CONTAINER --- */
         .container {
@@ -116,11 +126,9 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* --- ORB (RESIZED) --- */
+        /* --- MAGIC ORB --- */
         .orb-container {
-            width: 220px; /* Было 300px */
-            height: 220px; /* Было 300px */
-            position: relative;
+            width: 300px; height: 300px; position: relative;
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; animation: float 6s ease-in-out infinite; margin-bottom: 30px;
         }
@@ -139,13 +147,12 @@
         .orb-inner {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: #fff; font-size: 4rem; /* Уменьшил с 5rem */ 
-            z-index: 20; opacity: 0; pointer-events: none;
+            color: #fff; font-size: 5rem; z-index: 20; opacity: 0; pointer-events: none;
             background: rgba(0,0,0,0.6); transition: opacity 0.3s;
         }
         .orb-inner.visible { opacity: 1; }
 
-        /* --- TEXT --- */
+        /* --- PREDICTION TEXT --- */
         .prediction-box {
             min-height: 80px; display: flex; justify-content: center; align-items: center;
             text-align: center; max-width: 600px; padding: 0 20px;
@@ -159,7 +166,9 @@
 
         /* --- BUTTON --- */
         .cta-btn {
-            background: transparent; border: 2px solid var(--accent-primary); color: var(--accent-primary);
+            background: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
             padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 1rem;
             margin-top: 40px; cursor: pointer; display: flex; align-items: center; gap: 10px;
             transition: all 0.3s;
@@ -175,11 +184,12 @@
             * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; }
             header { padding: 0 1rem; }
             .logo { font-size: 1.2rem; } .controls { gap: 10px; }
+            
+            /* Скрываем ползунок на мобилке */
             input[type=range] { display: none; } 
+            .audio-group { padding: 6px 12px; }
             
-            /* Уменьшаем еще сильнее для мобилок */
-            .orb-container { width: 180px; height: 180px; }
-            
+            .orb-container { width: 250px; height: 250px; }
             .prediction-text { font-size: 1.2rem; }
         }
     </style>
@@ -198,8 +208,14 @@
             <a href="index.html" class="back-btn" title="На главную"><i class="fas fa-arrow-left"></i></a>
             <div class="logo">ОРАКУЛ</div>
         </div>
+        
         <div class="controls">
-            <button class="icon-btn" id="musicToggle"><i class="fas fa-play"></i></button>
+            <!-- ГРУППА АУДИО С ПОЛЗУНКОМ -->
+            <div class="audio-group">
+                <button class="icon-btn" id="musicToggle"><i class="fas fa-play"></i></button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+            </div>
+            
             <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
         </div>
     </header>
@@ -228,15 +244,161 @@
     <footer>Shchekster Oracle</footer>
 
     <script>
+        // --- LOGIC ---
         const parts = {
-            time: ["Сегодня", "Завтра", "В полночь", "На днях", "В 2025 году", "Прямо сейчас", "Через час", "Когда выспишься", "Никогда", "В худший день", "Когда забудешь телефон"],
-            event: ["тебя ждет успех", "найдешь деньги", "встретишь кота", "придет гениальная идея", "наступишь в лужу", "отрубится интернет", "опоздаешь везде", "все будут смеяться", "тебя уволят", "наберешь вес", "кот нассыт в тапки"],
-            outcome: ["и это судьба.", "будь готов.", "не упусти!", "мяу!", "звезды решили так.", "Щёкстер доволен.", "и ты будешь плакать.", "лошара.", "смирись.", "жизнь боль.", "так тебе и надо."]
+            time: [
+                "Сегодня",
+                "Завтра",
+                "В полночь", 
+                "На днях", 
+                "В 2025 году", 
+                "Прямо сейчас", 
+                "Через час", 
+                "Когда выспишься", 
+                "В ближайшие дни", 
+                "Утром", 
+                "В течение недели",
+                "Однажды днём", 
+                "В выходной", 
+                "К вечеру",
+                "В этом месяце", 
+                "В худший день", 
+                "Когда забудешь телефон",
+                "В момент сомнений",
+                "После хорошего сна",
+                "Перед важным делом",
+                "В спокойный вечер",
+                "Когда будешь готов",
+                "После отдыха"
+            ],
+            event: [
+                "тебя ждёт приятная новость",
+                "ты найдёшь удачное решение",
+                "появится вдохновляющая идея",
+                "кто-то поддержит тебя",
+                "произойдёт тёплая встреча",
+                "ты неожиданно поймёшь важную вещь",
+                "удача окажется рядом",
+                "ты сделаешь правильный шаг",
+                "обстоятельства сложатся в твою пользу",
+                "ты получишь полезный совет",
+                "ты почувствуешь уверенность",
+                "тебя заметят и оценят",
+                "ты найдёшь то, что искал",
+                "появится новая возможность",
+                "ты спокойно справишься с задачей",
+                "тебя ждет успех", 
+                "найдешь деньги", 
+                "встретишь кота", 
+                "придет гениальная идея", 
+                "наступишь в лужу", 
+                "тебя ждет приятная встреча", 
+                "тебя ждёт приятное сообщение", 
+                "ты примешь удачное решение", 
+                "у тебя появится вдохновение", 
+                "тебя посетит умная мысль", 
+                "ты получишь важный совет",
+                "отрубится интернет", 
+                "опоздаешь везде", 
+                "все будут смеяться", 
+                "тебя уволят", 
+                "наберешь вес", 
+                "кот нассыт в тапки"
+            ],
+            outcome: [
+                "это принесёт радость",
+                "ты почувствуешь облегчение",
+                "всё пройдёт успешно",
+                "день сложится хорошо",
+                "ты будешь доволен собой",
+                "жизнь станет проще",
+                "это даст тебе силы",
+                "ты почувствуешь внутренний баланс",
+                "настроение заметно улучшится",
+                "ты станешь увереннее",
+                "это приблизит тебя к цели",
+                "ты ощутишь спокойствие",
+                "всё пойдёт как надо",
+                "ты увидишь смысл происходящего",
+                "это станет хорошим началом",
+                "и это судьба.", 
+                "будь готов.", 
+                "не упусти!", 
+                "мяу!", 
+                "звезды решили так.", 
+                "горжусь тобой!", 
+                "", 
+                "", 
+                "", 
+                "",
+                "Щёкстер доволен.", 
+                "и ты будешь плакать.", 
+                "лошара.", 
+                "смирись.", 
+                "жизнь боль.", 
+                "так тебе и надо.", 
+                "молодец.", 
+                "да, Такое тоже бывает!"
+            ]
         };
 
         function generatePrediction() {
             if (Math.random() < 0.3) {
-                const specials = ["Ты выглядишь ужасно.", "Твой IQ как у хлебушка.", "Удачи не будет.", "Пустота впереди.", "Никто тебя не любит.", "42. Но это не поможет.", "Покорми кота или умрешь.", "Не ешь желтый снег.", "Найди работу.", "Аура как у помойки."];
+                const specials = [
+                    "Ты сегодня в потоке.",
+                    "Вселенная на твоей стороне.",
+                    "Это был правильный выбор.",
+                    "Ты реально красавчик.",
+                    "Удача уже выехала к тебе.",
+                    "Ты сделал всё как надо.",
+                    "Скоро станет понятно, зачем всё это было.",
+                    "Ты лучше, чем сам о себе думаешь.",
+                    "Сегодня тебе можно всё.",
+                    "Звёзды сказали: да.",
+                    "Это твой момент.",
+                    "Ты прошёл сложный уровень.",
+                    "Система на твоей стороне.",
+                    "Жизнь ставит лайк.",
+                    "Ты словил нужный вайб.",
+                    "Всё идёт по плану, даже если кажется иначе.",
+                    "Ты в нужном таймлайне.",
+                    "Скоро будет приятно.",
+                    "Это начало чего-то хорошего.",
+                    "Ты сделал максимум — этого достаточно.",
+                    "Сегодня ты главный герой.",
+                    "Реальность подстраивается под тебя.",
+                    "Ты всё понял правильно.",
+                    "Тебе повезёт без причины.",
+                    "Это редкий удачный день.",
+                    "Ты заслужил этот результат.",
+                    "Скоро придёт хорошая новость.",
+                    "Ты идёшь быстрее, чем думаешь.",
+                    "Вселенная подмигнула.",
+                    "Это было не зря.",
+                    "Ты на правильной стороне истории.",
+                    "Сегодня всё сложится.",
+                    "Ты приятно удивишься.",
+                    "Это твой знак.",
+                    "Сейчас — удачное время.",
+                    "Ты всё делаешь правильно.",
+                    "Будет легче, чем ожидалось.",
+                    "Ты в плюсе.",
+                    "Это хороший исход.",
+                    "Дальше — лучше.",
+                    "Ты выглядишь ужасно.", 
+                    "Твой IQ как у хлебушка.", 
+                    "Удачи не будет.", 
+                    "Пустота впереди.", 
+                    "Никто тебя не любит.", 
+                    "42. Но это не поможет.", 
+                    "Покорми кота или умрешь.", 
+                    "Не ешь желтый снег, это не сок...", 
+                    "Найди работу.", 
+                    "Аура как у помойки.", 
+                    "Нет, ты не глупенький. Ты просто реально тупой", 
+                    "Бро, ты умрёшь и т.д.", 
+                    "Надо построить ЭЭЭЭЭ короч огромный лоток."
+                ];
                 return specials[Math.floor(Math.random() * specials.length)];
             }
             const t = parts.time[Math.floor(Math.random() * parts.time.length)];
@@ -268,8 +430,8 @@
                 const isBad = pred.includes("ужасно") || pred.includes("лошара") || pred.includes("нассыт") || pred.includes("боль") || pred.includes("умрешь") || pred.includes("плохо") || pred.includes("никогда") || pred.includes("идиот") || pred.includes("помойки");
                 
                 if (isBad) {
-                    inner.innerHTML = '<i class="fas fa-star"></i>'; // Звезда
-                    inner.style.color = '#ef4444'; // Красная
+                    inner.innerHTML = '<i class="fas fa-star"></i>'; 
+                    inner.style.color = '#ef4444';
                     text.classList.add('toxic');   
                     
                     orb.style.borderColor = "#ef4444";
@@ -289,6 +451,7 @@
             }, 500);
         }
 
+        // --- SNOW ---
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
@@ -302,11 +465,13 @@
         }
         setInterval(createSnowflake, 200);
 
+        // --- UI & THEME ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         if (!window.matchMedia("(hover: none)").matches) {
             window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
                 cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
             });
             document.querySelectorAll('a, button, .orb').forEach(el => {
@@ -327,12 +492,24 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
+        // --- MUSIC CONTROL ---
         const musicBtn = document.getElementById('musicToggle');
         const audio = document.getElementById('bgMusic');
+        const volSlider = document.getElementById('volumeSlider');
         audio.volume = 0.5;
+
         musicBtn.addEventListener('click', () => {
-            if (audio.paused) { audio.play(); musicBtn.querySelector('i').className = 'fas fa-pause'; }
-            else { audio.pause(); musicBtn.querySelector('i').className = 'fas fa-play'; }
+            if (audio.paused) { 
+                audio.play().catch(e => alert("Взаимодействие со страницей необходимо")); 
+                musicBtn.querySelector('i').className = 'fas fa-pause'; 
+            } else { 
+                audio.pause(); 
+                musicBtn.querySelector('i').className = 'fas fa-play'; 
+            }
+        });
+        
+        volSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
         });
     </script>
 </body>
