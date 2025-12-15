@@ -21,9 +21,7 @@
             --cursor-color: #3F98F7;
             --danger-color: #ef4444;
             
-            /* GLASS HEADER */
             --header-bg: rgba(18, 18, 18, 0.8); 
-            
             --border-color: rgba(255, 255, 255, 0.1);
             --control-bg: rgba(255, 255, 255, 0.08); 
             --slider-track: rgba(255, 255, 255, 0.2);
@@ -104,19 +102,10 @@
         .back-btn:hover { background: var(--control-bg); color: var(--accent-primary); transform: scale(1.1); }
 
         .controls { display: flex; align-items: center; gap: 15px; }
-        
-        /* Группа аудио (кнопка + ползунок) */
-        .audio-group { 
-            display: flex; align-items: center; gap: 12px; 
-            background: var(--control-bg); padding: 6px 16px; 
-            border-radius: 50px; border: 1px solid var(--border-color); 
-        }
-        
+        .audio-group { display: flex; align-items: center; gap: 12px; background: var(--control-bg); padding: 6px 16px; border-radius: 50px; border: 1px solid var(--border-color); }
         .icon-btn { background: none; border: none; color: var(--accent-primary); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        
         input[type=range] { -webkit-appearance: none; width: 80px; height: 4px; background: var(--slider-track); border-radius: 2px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); cursor: pointer; }
-        
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-primary); }
         .theme-btn { background: var(--control-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;}
 
         /* --- CONTAINER --- */
@@ -148,11 +137,11 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             color: #fff; font-size: 5rem; z-index: 20; opacity: 0; pointer-events: none;
-            background: rgba(0,0,0,0.6); transition: opacity 0.3s;
+            background: rgba(0,0,0,0.6); transition: opacity 0.3s, background 0.3s, box-shadow 0.3s;
         }
         .orb-inner.visible { opacity: 1; }
 
-        /* --- PREDICTION TEXT --- */
+        /* --- TEXT --- */
         .prediction-box {
             min-height: 80px; display: flex; justify-content: center; align-items: center;
             text-align: center; max-width: 600px; padding: 0 20px;
@@ -184,11 +173,7 @@
             * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; }
             header { padding: 0 1rem; }
             .logo { font-size: 1.2rem; } .controls { gap: 10px; }
-            
-            /* Скрываем ползунок на мобилке */
-            input[type=range] { display: none; } 
-            .audio-group { padding: 6px 12px; }
-            
+            input[type=range] { display: none; } .audio-group { padding: 6px 12px; }
             .orb-container { width: 250px; height: 250px; }
             .prediction-text { font-size: 1.2rem; }
         }
@@ -210,9 +195,10 @@
         </div>
         
         <div class="controls">
-            <!-- ГРУППА АУДИО С ПОЛЗУНКОМ -->
             <div class="audio-group">
-                <button class="icon-btn" id="musicToggle"><i class="fas fa-play"></i></button>
+                <button class="icon-btn" id="musicToggle" title="Музыка">
+                    <i class="fas fa-play"></i>
+                </button>
                 <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
             </div>
             
@@ -241,172 +227,107 @@
 
     </div>
 
-    <footer>Shchekster Oracle</footer>
+    <footer>Shchekster Oracle | Controls Your Life</footer>
 
     <script>
-        // --- LOGIC ---
-        const parts = {
+        // --- 1. ПОЗИТИВНЫЙ СПИСОК (GOOD) ---
+        const good = {
             time: [
-                "Сегодня",
-                "Завтра",
-                "В полночь", 
-                "На днях", 
-                "В 2025 году", 
-                "Прямо сейчас", 
-                "Через час", 
-                "Когда выспишься", 
-                "В ближайшие дни", 
-                "Утром", 
-                "В течение недели",
-                "Однажды днём", 
-                "В выходной", 
-                "К вечеру",
-                "В этом месяце", 
-                "В худший день", 
-                "Когда забудешь телефон",
-                "В момент сомнений",
-                "После хорошего сна",
-                "Перед важным делом",
-                "В спокойный вечер",
-                "Когда будешь готов",
-                "После отдыха"
+                "Сегодня", "Завтра", "В полночь", "На днях", "В 2025 году", 
+                "Прямо сейчас", "Через час", "Когда выспишься", "В ближайшие дни", 
+                "Утром", "В течение недели", "В выходной", "К вечеру", 
+                "В этом месяце", "После хорошего сна", "Перед важным делом", 
+                "В спокойный вечер", "Когда будешь готов", "После отдыха"
             ],
             event: [
-                "тебя ждёт приятная новость",
-                "ты найдёшь удачное решение",
-                "появится вдохновляющая идея",
-                "кто-то поддержит тебя",
-                "произойдёт тёплая встреча",
-                "ты неожиданно поймёшь важную вещь",
-                "удача окажется рядом",
-                "ты сделаешь правильный шаг",
-                "обстоятельства сложатся в твою пользу",
-                "ты получишь полезный совет",
-                "ты почувствуешь уверенность",
-                "тебя заметят и оценят",
-                "ты найдёшь то, что искал",
-                "появится новая возможность",
-                "ты спокойно справишься с задачей",
-                "тебя ждет успех", 
-                "найдешь деньги", 
-                "встретишь кота", 
-                "придет гениальная идея", 
-                "наступишь в лужу", 
-                "тебя ждет приятная встреча", 
-                "тебя ждёт приятное сообщение", 
-                "ты примешь удачное решение", 
-                "у тебя появится вдохновение", 
-                "тебя посетит умная мысль", 
-                "ты получишь важный совет",
-                "отрубится интернет", 
-                "опоздаешь везде", 
-                "все будут смеяться", 
-                "тебя уволят", 
-                "наберешь вес", 
-                "кот нассыт в тапки"
+                "тебя ждёт приятная новость", "ты найдёшь удачное решение", "появится вдохновляющая идея",
+                "кто-то поддержит тебя", "произойдёт тёплая встреча", "ты неожиданно поймёшь важную вещь",
+                "удача окажется рядом", "ты сделаешь правильный шаг", "обстоятельства сложатся в твою пользу",
+                "ты получишь полезный совет", "ты почувствуешь уверенность", "тебя заметят и оценят",
+                "ты найдёшь то, что искал", "появится новая возможность", "ты спокойно справишься с задачей",
+                "тебя ждет успех", "найдешь деньги", "встретишь кота", "придет гениальная идея",
+                "тебя ждет приятная встреча", "тебя ждёт приятное сообщение", "ты примешь удачное решение",
+                "у тебя появится вдохновение", "тебя посетит умная мысль", "ты получишь важный совет"
             ],
             outcome: [
-                "это принесёт радость",
-                "ты почувствуешь облегчение",
-                "всё пройдёт успешно",
-                "день сложится хорошо",
-                "ты будешь доволен собой",
-                "жизнь станет проще",
-                "это даст тебе силы",
-                "ты почувствуешь внутренний баланс",
-                "настроение заметно улучшится",
-                "ты станешь увереннее",
-                "это приблизит тебя к цели",
-                "ты ощутишь спокойствие",
-                "всё пойдёт как надо",
-                "ты увидишь смысл происходящего",
-                "это станет хорошим началом",
-                "и это судьба.", 
-                "будь готов.", 
-                "не упусти!", 
-                "мяу!", 
-                "звезды решили так.", 
-                "горжусь тобой!", 
-                "", 
-                "", 
-                "", 
-                "",
-                "Щёкстер доволен.", 
-                "и ты будешь плакать.", 
-                "лошара.", 
-                "смирись.", 
-                "жизнь боль.", 
-                "так тебе и надо.", 
-                "молодец.", 
-                "да, Такое тоже бывает!"
+                "это принесёт радость", "ты почувствуешь облегчение", "всё пройдёт успешно",
+                "день сложится хорошо", "ты будешь доволен собой", "жизнь станет проще",
+                "это даст тебе силы", "ты почувствуешь внутренний баланс", "настроение заметно улучшится",
+                "ты станешь увереннее", "это приблизит тебя к цели", "ты ощутишь спокойствие",
+                "всё пойдёт как надо", "ты увидишь смысл происходящего", "это станет хорошим началом",
+                "и это судьба.", "будь готов.", "не упусти!", "мяу!", "звезды решили так.", 
+                "горжусь тобой!", "Щёкстер доволен.", "молодец.", "да, такое тоже бывает!"
+            ],
+            specials: [
+                "Ты сегодня в потоке.", "Вселенная на твоей стороне.", "Это был правильный выбор.",
+                "Ты реально красавчик.", "Удача уже выехала к тебе.", "Ты сделал всё как надо.",
+                "Скоро станет понятно, зачем всё это было.", "Ты лучше, чем сам о себе думаешь.",
+                "Сегодня тебе можно всё.", "Звёзды сказали: да.", "Это твой момент.",
+                "Ты прошёл сложный уровень.", "Система на твоей стороне.", "Жизнь ставит лайк.",
+                "Ты словил нужный вайб.", "Всё идёт по плану, даже если кажется иначе.",
+                "Ты в нужном таймлайне.", "Скоро будет приятно.", "Это начало чего-то хорошего.",
+                "Ты сделал максимум — этого достаточно.", "Сегодня ты главный герой.",
+                "Реальность подстраивается под тебя.", "Ты всё понял правильно.",
+                "Тебе повезёт без причины.", "Это редкий удачный день.", "Ты заслужил этот результат.",
+                "Скоро придёт хорошая новость.", "Ты идёшь быстрее, чем думаешь.",
+                "Вселенная подмигнула.", "Это было не зря.", "Ты на правильной стороне истории.",
+                "Сегодня всё сложится.", "Ты приятно удивишься.", "Это твой знак.",
+                "Сейчас — удачное время.", "Ты всё делаешь правильно.", "Будет легче, чем ожидалось.",
+                "Ты в плюсе.", "Это хороший исход.", "Дальше — лучше."
             ]
         };
 
-        function generatePrediction() {
-            if (Math.random() < 0.3) {
-                const specials = [
-                    "Ты сегодня в потоке.",
-                    "Вселенная на твоей стороне.",
-                    "Это был правильный выбор.",
-                    "Ты реально красавчик.",
-                    "Удача уже выехала к тебе.",
-                    "Ты сделал всё как надо.",
-                    "Скоро станет понятно, зачем всё это было.",
-                    "Ты лучше, чем сам о себе думаешь.",
-                    "Сегодня тебе можно всё.",
-                    "Звёзды сказали: да.",
-                    "Это твой момент.",
-                    "Ты прошёл сложный уровень.",
-                    "Система на твоей стороне.",
-                    "Жизнь ставит лайк.",
-                    "Ты словил нужный вайб.",
-                    "Всё идёт по плану, даже если кажется иначе.",
-                    "Ты в нужном таймлайне.",
-                    "Скоро будет приятно.",
-                    "Это начало чего-то хорошего.",
-                    "Ты сделал максимум — этого достаточно.",
-                    "Сегодня ты главный герой.",
-                    "Реальность подстраивается под тебя.",
-                    "Ты всё понял правильно.",
-                    "Тебе повезёт без причины.",
-                    "Это редкий удачный день.",
-                    "Ты заслужил этот результат.",
-                    "Скоро придёт хорошая новость.",
-                    "Ты идёшь быстрее, чем думаешь.",
-                    "Вселенная подмигнула.",
-                    "Это было не зря.",
-                    "Ты на правильной стороне истории.",
-                    "Сегодня всё сложится.",
-                    "Ты приятно удивишься.",
-                    "Это твой знак.",
-                    "Сейчас — удачное время.",
-                    "Ты всё делаешь правильно.",
-                    "Будет легче, чем ожидалось.",
-                    "Ты в плюсе.",
-                    "Это хороший исход.",
-                    "Дальше — лучше.",
-                    "Ты выглядишь ужасно.", 
-                    "Твой IQ как у хлебушка.", 
-                    "Удачи не будет.", 
-                    "Пустота впереди.", 
-                    "Никто тебя не любит.", 
-                    "42. Но это не поможет.", 
-                    "Покорми кота или умрешь.", 
-                    "Не ешь желтый снег, это не сок...", 
-                    "Найди работу.", 
-                    "Аура как у помойки.", 
-                    "Нет, ты не глупенький. Ты просто реально тупой", 
-                    "Бро, ты умрёшь и т.д.", 
-                    "Надо построить ЭЭЭЭЭ короч огромный лоток."
-                ];
-                return specials[Math.floor(Math.random() * specials.length)];
+        // --- 2. НЕГАТИВНЫЙ СПИСОК (BAD/TOXIC) ---
+        const bad = {
+            time: [
+                "В худший день", "Когда забудешь телефон", "В момент сомнений", 
+                "Когда рак на горе свистнет", "В понедельник утром",
+                "Когда ты расслабишься"
+            ],
+            event: [
+                "наступишь в лужу", "отрубится интернет", "опоздаешь везде", 
+                "все будут смеяться", "тебя уволят", "наберешь вес", 
+                "кот нассыт в тапки", "потеряешь ключи", "сломаешь ноготь",
+                "уронишь телефон экраном вниз", "прольешь кофе на штаны"
+            ],
+            outcome: [
+                "и ты будешь плакать.", "лошара.", "смирись.", "жизнь боль.", 
+                "так тебе и надо.", "это фиаско, братан.", "ну и поделом.",
+                "никто не поможет.", "готовься к худшему.", "ха-ха-ха."
+            ],
+            specials: [
+                "Ты выглядишь ужасно.", "Твой IQ как у хлебушка.", "Удачи не будет.", 
+                "Пустота впереди.", "Никто тебя не любит.", "42. Но это не поможет.", 
+                "Покорми кота или умрешь.", "Не ешь желтый снег, это не сок...", 
+                "Найди работу.", "Аура как у помойки.", "Нет, ты не глупенький. Ты просто реально тупой", 
+                "Бро, ты умрёшь и т.д.", "Надо построить ЭЭЭЭЭ короч огромный лоток.",
+                "Завтра будет хуже, чем сегодня.", "Твои мечты — это просто галлюцинации."
+            ]
+        };
+
+        // --- ГЛАВНАЯ ФУНКЦИЯ ГЕНЕРАЦИИ ---
+        function getPredictionData() {
+            // Шанс 30% на плохое предсказание
+            const isBad = Math.random() < 0.3;
+            
+            // Выбираем соответствующий словарь
+            const source = isBad ? bad : good;
+            let text = "";
+
+            // Шанс 50% на "специальную фразу" (готовую), иначе собираем из частей
+            if (Math.random() < 0.5) {
+                text = source.specials[Math.floor(Math.random() * source.specials.length)];
+            } else {
+                const t = source.time[Math.floor(Math.random() * source.time.length)];
+                const e = source.event[Math.floor(Math.random() * source.event.length)];
+                const o = source.outcome[Math.floor(Math.random() * source.outcome.length)];
+                text = `${t} ${e}, ${o}`;
             }
-            const t = parts.time[Math.floor(Math.random() * parts.time.length)];
-            const e = parts.event[Math.floor(Math.random() * parts.event.length)];
-            const o = parts.outcome[Math.floor(Math.random() * parts.outcome.length)];
-            return `${t} ${e}, ${o}`;
+
+            return { text, isBad };
         }
 
+        // --- UI ФУНКЦИЯ ---
         function getPrediction() {
             const orb = document.getElementById('magicOrb');
             const inner = document.getElementById('orbInner');
@@ -416,20 +337,20 @@
             inner.classList.remove('visible');
             orb.classList.add('shaking');
             
-            // Сброс цвета
+            // Сброс цветов
             orb.style.borderColor = "#3F98F7";
             orb.style.boxShadow = "0 0 60px rgba(63, 152, 247, 0.3)";
 
-            const pred = generatePrediction();
+            // Генерируем данные
+            const result = getPredictionData();
 
             setTimeout(() => {
                 orb.classList.remove('shaking');
-                text.innerText = pred;
+                text.innerText = result.text;
                 text.classList.add('show');
                 
-                const isBad = pred.includes("ужасно") || pred.includes("лошара") || pred.includes("нассыт") || pred.includes("боль") || pred.includes("умрешь") || pred.includes("плохо") || pred.includes("никогда") || pred.includes("идиот") || pred.includes("помойки");
-                
-                if (isBad) {
+                if (result.isBad) {
+                    // --- КРАСНЫЙ РЕЖИМ (TOXIC) ---
                     inner.innerHTML = '<i class="fas fa-star"></i>'; 
                     inner.style.color = '#ef4444';
                     text.classList.add('toxic');   
@@ -437,13 +358,16 @@
                     orb.style.borderColor = "#ef4444";
                     orb.style.boxShadow = "0 0 80px rgba(239, 68, 68, 0.8)";
                     inner.style.background = 'rgba(239, 68, 68, 0.7)';
+                    inner.style.boxShadow = '0 0 40px rgba(239, 68, 68, 0.6)';
                 } else {
+                    // --- СИНИЙ РЕЖИМ (GOOD) ---
                     inner.innerHTML = '<i class="fas fa-star"></i>';
                     inner.style.color = '#fff';
                     
                     orb.style.borderColor = "#3F98F7";
                     orb.style.boxShadow = "0 0 80px rgba(63, 152, 247, 0.8)";
                     inner.style.background = 'rgba(0, 0, 0, 0.5)';
+                    inner.style.boxShadow = 'none';
                 }
                 
                 inner.classList.add('visible');
@@ -470,8 +394,7 @@
         const cursorOutline = document.querySelector('.cursor-outline');
         if (!window.matchMedia("(hover: none)").matches) {
             window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`;
-                cursorDot.style.top = `${e.clientY}px`;
+                cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
                 cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
             });
             document.querySelectorAll('a, button, .orb').forEach(el => {
@@ -492,7 +415,7 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // --- MUSIC CONTROL ---
+        // --- MUSIC ---
         const musicBtn = document.getElementById('musicToggle');
         const audio = document.getElementById('bgMusic');
         const volSlider = document.getElementById('volumeSlider');
