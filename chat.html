@@ -227,8 +227,8 @@
 
 <script>
         // --- ВСТАВЬ ССЫЛКУ ИЗ COLAB (ngrok) СЮДА ---
-        const SERVER_URL = "https://frenetically-unpared-lillian.ngrok-free.dev"; 
-
+        const SERVER_URL = "https://whosehip-shchekster-backend.hf.space"; 
+        
         // --- SNOW LOGIC ---
         function createSnowflake() {
             const snowflake = document.createElement('div');
@@ -316,7 +316,7 @@
 
             } catch (error) {
                 removeMessage(loadingId);
-                addMessage("😿 Ошибка связи с космосом. Разбуди сервер в Colab.", 'bot');
+                addMessage("😿 Ошибка связи с космосом.", 'bot');
                 console.error(error);
             }
 
